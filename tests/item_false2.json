@@ -1,0 +1,32 @@
+{
+  "T-shirt": {
+    "item_price": 30.99,
+    "shipped_from": "US",
+    "Weight": 0.2
+  }
+  "Blouse": {
+    "item_price": 10.99,
+    "shipped_from": "UK",
+    "Weight": 0.3
+  },
+  "Pants": {
+    "item_price": 64.99,
+    "shipped_from": "UK",
+    "Weight": 0.9
+  },
+  "Sweatpants": {
+    "item_price": 84.99,
+    "shipped_from": "CN",
+    "Weight": 1.1
+  },
+  "Jacket": {
+    "item_price": 199.99,
+    "shipped_from": "US",
+    "Weight": 2.2
+  },
+  "Shoes": {
+    "item_price": 79.99,
+    "shipped_from": "CN",
+    "Weight": 1.3
+  }
+}
