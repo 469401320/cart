@@ -1,4 +1,4 @@
-Python Testing Example: pytest
+price and print invoice
 ==============================
 This project will work for Python 3.7 or higher.
 
