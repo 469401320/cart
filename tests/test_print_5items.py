@@ -32,17 +32,6 @@ def test_check_vat(create_invoice):
     assert int(1000 * invoice.vat) == 54173
 
 
-def test_check_shoe_off(create_invoice):
+def test_check_total_discount(create_invoice):
     invoice = create_invoice
-    assert int(1000 * invoice.shoe_off) == 7999
-
-
-def test_check_jacket_off(create_invoice):
-    invoice = create_invoice
-    assert int(1000 * invoice.jacket_off) == 99995
-
-
-def test_check_shipping_off(create_invoice):
-    invoice = create_invoice
-    invoice.invoice_print()
-    assert int(invoice.shipping_off) == 10
+    assert int(1000 * invoice.discount_manager.total_discount(invoice.products, invoice.product_info)) == 117994
