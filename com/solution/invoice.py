@@ -18,9 +18,6 @@ class Invoice:
     shipping: float = field(default=0.0)
     vat: float = field(default=0.0)
     total: float = field(default=0.0)
-    shoe_off: float = field(default=0.0)
-    jacket_off: float = field(default=0.0)
-    shipping_off: float = field(default=0.0)
     discount_manager: DiscountManager = field(default_factory=DiscountManager)
 
     def __post_init__(self):
@@ -73,21 +70,19 @@ class Invoice:
         self.total = 0.0
         self.shipping = 0.0
         self.vat = 0.0
-
-        shoe_cost = 0.0
-
+        self.discount_manager.before_calc()
         try:
             for product in self.products:
                 self.subtotal += self.product_info.items[product]['item_price']
                 country = self.product_info.items[product]['shipped_from']
-                self.shipping += math.ceil(self.product_info.items[product]['Weight'] * 10) * self.product_info.rates[country]
-
+                self.shipping += math.ceil(self.product_info.items[product]['Weight'] * 10) * self.product_info.rates[
+                    country]
+                self.discount_manager.calc(product, self.product_info)
         except Exception as err:
             logger.error(err)
+        self.discount_manager.after_calc(self.products, self.product_info)
         self.vat = self.subtotal * 0.14
-
-        self.total = self.subtotal + self.shipping + self.vat - self.discount_manager.total_discount(self.products, self.product_info)
-
+        self.total = self.subtotal + self.shipping + self.vat - self.discount_manager.total_discount()
         logger.info("total %f, subtotal %f, shipping %f, vat %f",
                     self.total, self.subtotal, self.shipping, self.vat)
 

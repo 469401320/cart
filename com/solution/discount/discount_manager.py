@@ -9,6 +9,7 @@ class DiscountManager:
 
     def __init__(self):
         self.discounts = dict()
+        self.total_off = 0.0
 
     def add(self, dis: Discount):
         """add a discount rule.
@@ -40,12 +41,60 @@ class DiscountManager:
             logger.warn("no discount %s", dis_name)
         del self.discounts[dis_name]
 
-    def total_discount(self, products: List[str], product_info: Data) -> float:
+    def before_calc(self):
+        """do init job before iterating products.
+
+            Args:
+
+            Returns:
+
+
+            Raises:
+            Exception:
+        """
+        for item_discount in self.discounts.values():
+            item_discount.before_calc()
+        return
+
+    def calc(self, product: str, product_info: Data):
+        """calc during iterating products.
+
+            Args:
+                product: product name
+                product_info: products prices and rates
+
+            Returns:
+
+            Raises:
+            Exception:
+        """
+        for item_discount in self.discounts.values():
+            item_discount.calc(product, product_info)
+        return
+
+    def after_calc(self, products: List[str], product_info: Data) -> float:
+        """get discount with iterating data.
+
+            Args:
+                products: products name
+                product_info: products prices and rates
+
+            Returns:
+                discount
+
+            Raises:
+            Exception:
+        """
+        self.total_off = 0.0
+        for item_discount in self.discounts.values():
+            self.total_off += item_discount.after_calc(products, product_info)
+        return self.total_off
+
+    def total_discount(self) -> float:
         """delete a discount rule.
 
                                     Args:
-                                        products: products name
-                                        product_info: products prices and rates
+
 
                                     Returns:
                                         total_discount of all products
@@ -53,10 +102,8 @@ class DiscountManager:
                                     Raises:
                                     Exception:
          """
-        total = 0.0
-        for item_discount in self.discounts.values():
-            total += item_discount.get_discount(products, product_info)
-        return total
+
+        return self.total_off
 
     def discount_print(self, products: List[str], product_info: Data) -> None:
         """print discount.

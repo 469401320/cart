@@ -34,4 +34,4 @@ def test_check_vat(create_invoice):
 
 def test_check_total_discount(create_invoice):
     invoice = create_invoice
-    assert int(1000 * invoice.discount_manager.total_discount(invoice.products, invoice.product_info)) == 117994
+    assert int(1000 * invoice.discount_manager.total_discount()) == 117994
